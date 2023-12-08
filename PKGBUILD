@@ -59,7 +59,7 @@ build() {
 package() {
   cd "$srcdir/glfw-$_pkggit"/build-wayland
 
-  make DESTDIR=$pkgdir install
+  cmake .. --build --target install
 
   cd ..
   install -Dm644 LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE.md"
