@@ -48,7 +48,7 @@ build() {
   cd "$srcdir/glfw-$_pkggit/build-wayland"
 
   cmake .. \
-      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_PREFIX=$pkgdir/usr \
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DBUILD_SHARED_LIBS=ON \
       -DGLFW_USE_WAYLAND=ON \
@@ -59,7 +59,7 @@ build() {
 package() {
   cd "$srcdir/glfw-$_pkggit"/build-wayland
 
-  cmake .. --build --target=install
+  cmake --build . --target install
 
   cd ..
   install -Dm644 LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE.md"
