@@ -8,6 +8,7 @@
 
 pkgname=glfw-wayland-minecraft
 pkgdesc="A free, open source, portable framework for graphical application development (wayland, patched for Minecraft)"
+
 pkgver=3.4.0+1.19
 _pkggit=3eaf1255b29fdf5c2895856c7be7d7185ef2b241
 pkgrel=2
@@ -20,6 +21,7 @@ provides=("glfw=$pkgver")
 makedepends=('mesa' 'cmake' 'doxygen' 'vulkan-headers' 'vulkan-icd-loader'
              'extra-cmake-modules' 'wayland-protocols' 'libxi' 'libxrandr'
              'libxcursor' 'libxkbcommon' 'libxinerama')
+
 source=("https://github.com/glfw/glfw/archive/${_pkggit}.tar.gz"
         "0003-Don-t-crash-on-calls-to-focus-or-icon.patch"
         "0005-Add-warning-about-being-an-unofficial-patch.patch"
@@ -48,7 +50,7 @@ build() {
   cd "$srcdir/glfw-$_pkggit/build-wayland"
 
   cmake .. \
-      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_PREFIX=$pkgdir \
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DBUILD_SHARED_LIBS=ON \
       -DGLFW_USE_WAYLAND=ON \
@@ -59,7 +61,7 @@ build() {
 package() {
   cd "$srcdir/glfw-$_pkggit"/build-wayland
 
-  make DESTDIR=$pkgdir install
+  cmake .. --build --target install
 
   cd ..
   install -Dm644 LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE.md"
